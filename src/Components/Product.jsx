@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import AddToCart from "./AddToCart";
-import { addItem } from "../Redux/Slice";
+import { addItem, removeItem } from "../Redux/Slice";
 
 const Product = () => {
   const dispatch = useDispatch();
@@ -23,6 +23,9 @@ const Product = () => {
         </p>
         <button onClick={() => dispatch(addItem(1))} className="btn">
           Add to Cart
+        </button>
+        <button onClick={() => dispatch(removeItem(1))} className="remove-btn">
+          Remove from Cart
         </button>
       </div>
     </div>
