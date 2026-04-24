@@ -1,41 +1,48 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AddToCart from "./AddToCart";
-import { addItem, removeItem } from "../Redux/Slice";
 import { fetchProducts } from "../Redux/productSlice";
+import { addItem, removeItem } from "../Redux/slice";
 
 const Product = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    fetchProducts;
-  }, []);
+  const { items, status, error } = useSelector((state) => state.products);
 
-  const selector = useSelector((state) => state.products.items);
-  console.log(selector);
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  if (status === "loading") {
+    return <h2>Loading...</h2>;
+  }
+
+  if (status === "failed") {
+    return <h2>Error: {error}</h2>;
+  }
 
   return (
-    <div className="product-card">
-      <div className="product-image">
-        <img
-          src="https://tse4.mm.bing.net/th/id/OIP.ZQA3TK2YJZvGA0jFtAmHFgHaLH?cb=thfc1&w=640&h=960&rs=1&pid=ImgDetMain&o=7&rm=3"
-          alt="Wireless Headphones"
-        />
-      </div>
+    <div className="products-container">
+      {items.map((item) => (
+        <div className="product-card" key={item.id}>
+          <div className="product-image">
+            <img src={item.image} alt={item.title} />
+          </div>
 
-      <div className="product-info">
-        <h2>Wireless Headphones</h2>
-        <p className="price">$120.20</p>
-        <p className="description">
-          High-quality wireless headphones with noise cancellation and long
-          battery life.
-        </p>
-        <button onClick={() => dispatch(addItem(1))} className="btn">
-          Add to Cart
-        </button>
-        <button onClick={() => dispatch(removeItem(1))} className="remove-btn">
-          Remove from Cart
-        </button>
-      </div>
+          <div className="product-info">
+            <h2>{item.title}</h2>
+            <p className="price">₹ {Math.round(item.price * 80)}</p>
+            <p className="description">{item.description.slice(0, 80)}...</p>
+          </div>
+
+          <div className="button-group">
+            <button className="btn" onClick={() => dispatch(addItem())}>
+              Add to Cart
+            </button>
+            <button className="remove-btn" onClick={() => dispatch(removeItem())}>
+              Remove Item
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

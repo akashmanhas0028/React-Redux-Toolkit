@@ -1,26 +1,35 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchProducts = createAsyncThunk('products', async () => {
-    const resp = await fetch('https://dummyjson.com/products')
-    const jsonResp = await resp.json()
-    return jsonResp.products
-})
+export const fetchProducts = createAsyncThunk("products/fetchProducts", async () => {
+    const resp = await fetch("https://fakestoreapi.com/products");
+    const data = await resp.json();
+    return data;
+});
 
 const initialState = {
     items: [],
-    status: undefined,
-    error: null
-}
+    status: "idle",
+    error: null,
+};
 
 const productSlice = createSlice({
-    name: 'productSlice',
+    name: "products",
     initialState,
+    reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(fetchProducts.fulfilled, (state, action) => {
-            state.status = "succeeded",
-                state.items = action.items
-        })
+        builder
+            .addCase(fetchProducts.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchProducts.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.items = action.payload;
+            })
+            .addCase(fetchProducts.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+            });
+    },
+});
 
-    }
-})
-export default productSlice.reducer
+export default productSlice.reducer;
