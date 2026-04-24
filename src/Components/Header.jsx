@@ -1,22 +1,21 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import AddToCart from "./AddToCart";
 
 const Header = () => {
-  const navLinks = ["Home", "Products", "Contact"];
-
   return (
     <header className="header">
       <div className="logo">MyStore</div>
 
       <nav className="nav">
-        {navLinks.map((link, index) => (
-          <a key={index} href="#">
-            {link}
-          </a>
-        ))}
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+        </ul>
       </nav>
 
-      <AddToCart/>
+      <AddToCart />
     </header>
   );
 };
