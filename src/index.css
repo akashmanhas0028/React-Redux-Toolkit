@@ -219,3 +219,10 @@ body {
     border-radius: 10px;
   }
 }
+
+.btn-disable{
+  background-color: gainsboro;
+}
+.btn-disable:hover{
+  background-color: gainsboro;
+}

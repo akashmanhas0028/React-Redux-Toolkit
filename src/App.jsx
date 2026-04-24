@@ -14,9 +14,6 @@ const App = () => {
         Redux and Redux Toolkit
       </h1>
       <Product />
-      <button onClick={() => dispatch(clearAllItems())} className="clear-cart">
-        Clear Cart
-      </button>
     </div>
   );
 };

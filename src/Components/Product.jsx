@@ -6,6 +6,7 @@ import { addItem, removeItem } from "../Redux/slice";
 const Product = () => {
   const dispatch = useDispatch();
   const { items, status, error } = useSelector((state) => state.products);
+  const cartSelector = useSelector((state) => state.cart.items);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -18,6 +19,8 @@ const Product = () => {
   if (status === "failed") {
     return <h2>Error: {error}</h2>;
   }
+
+  console.log(cartSelector.length);
 
   return (
     <div className="products-container">
@@ -33,14 +36,13 @@ const Product = () => {
             <p className="description">{item.description.slice(0, 80)}...</p>
           </div>
 
-          <div className="button-group">
-            <button className="btn" onClick={() => dispatch(addItem())}>
+          {cartSelector.find((cartItem) => cartItem.id === item.id) ? (
+            <button className="btn remove-btn" onClick={() => dispatch(removeItem(item))}>Remove from Cart</button>
+          ) : (
+            <button className="btn" onClick={() => dispatch(addItem(item))}>
               Add to Cart
             </button>
-            <button className="remove-btn" onClick={() => dispatch(removeItem())}>
-              Remove Item
-            </button>
-          </div>
+          )}
         </div>
       ))}
     </div>

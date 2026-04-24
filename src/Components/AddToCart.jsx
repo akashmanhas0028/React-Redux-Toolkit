@@ -2,13 +2,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const AddToCart = () => {
-  const selector = useSelector((state) => state.cart.value);
-  console.log(selector);
+  const cartSelector = useSelector((state) => state.cart);
+  console.log(cartSelector.items.length);
   return (
     <>
       <div className="cart">
         🛒
-        <span className="cart-count">{selector}</span>
+        <span className="cart-count">
+          {cartSelector.items.length ? cartSelector.items.length : 0}
+        </span>
       </div>
     </>
   );
